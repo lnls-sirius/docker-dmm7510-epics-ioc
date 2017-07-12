@@ -8,7 +8,7 @@ for a higher level application, more specifically the ICT and the DCCT IOCs.
 
 The easiest way to start the IOC is, after installing Docker, running:
 
-    docker run --rm -it --net host lnlsdig/dmm7510-ioc
+    docker run --rm -it --net host lnlsdig/dmm7510-epics-ioc
 
 This will open a bash shell into the configured environment, and you can then
 start the individual IOCs manually.
