@@ -1,8 +1,9 @@
 # Docker image for Keithley DMM7510 EPICS IOC
 
 This repository contains the Dockerfile used to create the Docker image with the
-EPICS IOC for the Keithley DMM7510. It also contains two other IOCs that use it
-for a higher level application, more specifically the ICT and the DCCT IOCs.
+[EPICS IOC for the Keithley DMM7510](https://github.com/lnls-dig/dmm7510-epics-ioc).
+It also contains two other IOCs that use it for a higher level application, more
+specifically the ICT and the DCCT IOCs.
 
 ## Running the IOCs
 
