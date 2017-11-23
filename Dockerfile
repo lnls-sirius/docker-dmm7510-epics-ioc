@@ -1,4 +1,4 @@
-FROM lnlsdig/epics-stream_2_7_7
+FROM lnls/epics-dist:centos-7.4.1708
 
 RUN git clone https://github.com/lnls-dig/dmm7510-epics-ioc.git /opt/epics/dmm7510 && \
     cd /opt/epics/dmm7510 && \
