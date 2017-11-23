@@ -30,12 +30,14 @@ DOCKER_FILES_FULL_NAME := ${SRC_DOCKER_FILE}
 DOCKER_FILES=$(DOCKER_FILES_FULL_NAME:./%=%)
 
 # Script files
-INIT_FILES_FULL_NAME := $(shell cd ${INIT_SYSTEM} && find . -type f)
+INIT_FILES_FULL_NAME := $(shell cd ${INIT_SYSTEM} && find etc -type f)
 # Strip off a leading ./
 INIT_FILES=$(INIT_FILES_FULL_NAME:./%=%)
+INIT_FILES_ABS=$(INIT_FILES:%=/%)
+INIT_FILES_DIR=$(dir $(INIT_FILES_PREFIX)$(INIT_FILES_ABS))
 
 # Binary files
-BIN_FILES_FULL_NAME := $(shell cd ${INIT_SYSTEM}/bin && find . -type f)
+BIN_FILES_FULL_NAME := $(shell cd ${INIT_SYSTEM} && find bin -type f)
 # Strip off a leading ./
 BIN_FILES=$(BIN_FILES_FULL_NAME:./%=%)
 
@@ -45,14 +47,15 @@ all:
 
 install:
 	${MKDIR} -p ${DOCKER_FILES_DEST}
+	${MKDIR} -p ${INIT_FILES_DIR}
 	$(foreach dockerfile,$(DOCKER_FILES),cp --preserve=mode --parents $(dockerfile) ${DOCKER_FILES_DEST}/ $(CMDSEP))
 	$(foreach script,$(INIT_FILES),cp --preserve=mode ${INIT_SYSTEM}/$(script) ${INIT_FILES_PREFIX}/$(script) $(CMDSEP))
-	$(foreach bin,$(BIN_FILES),cp --preserve=mode ${INIT_SYSTEM}/bin/$(bin) ${BIN_FILES_PREFIX}/bin/$(bin) $(CMDSEP))
+	$(foreach bin,$(BIN_FILES),cp --preserve=mode ${INIT_SYSTEM}/$(bin) ${BIN_FILES_PREFIX}/$(bin) $(CMDSEP))
 	-./scripts/enable-service.sh -s $(SERVICE_NAME)
 
 uninstall:
 	-./scripts/disable-service.sh -s $(SERVICE_NAME)
-	-$(foreach bin,$(BIN_FILES),rm -f ${BIN_FILES_PREFIX}/bin/$(bin) $(CMDSEP))
+	-$(foreach bin,$(BIN_FILES),rm -f ${BIN_FILES_PREFIX}/$(bin) $(CMDSEP))
 	-$(foreach script,$(INIT_FILES),rm -f ${INIT_FILES_PREFIX}/$(script) $(CMDSEP))
 	$(foreach dockerfile,$(DOCKER_FILES),rm -f ${DOCKER_FILES_DEST}/$(dockerfile) $(CMDSEP))
 	-${RMDIR} ${DOCKER_FILES_DEST}
