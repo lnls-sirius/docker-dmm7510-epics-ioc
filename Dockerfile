@@ -18,11 +18,4 @@ ENV EPICS_WORKDIR /opt/epics/startup/ioc/dmm7510-epics-ioc/iocBoot/iocdmm7510
 
 WORKDIR $EPICS_WORKDIR
 
-CMD /bin/bash -c \
-    ". /root/.bashrc && \
-    /usr/local/bin/procServ \
-    -f \
-    -n DMM7510 \
-    -i ^C^D \
-    20000 \
-    ./runGenericCT.sh"
+ENTRYPOINT ["/opt/epics/startup/ioc/dmm7510-epics-ioc/iocBoot/iocdmm7510/runGenericCT.sh"]
