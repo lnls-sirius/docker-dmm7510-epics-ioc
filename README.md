@@ -7,22 +7,34 @@ specifically the ICT and the DCCT IOCs.
 
 ## Running the IOCs
 
-The easiest way to start the IOC is, after installing Docker, running:
+The simples way to run the IOC is to run:
 
-    docker run --rm -it --net host lnlsdig/dmm7510-epics-ioc bash
+    docker run --rm -it --net host lnlsdig/dmm7510-epics-ioc -i IPADDR
 
-This will open a bash shell into the configured environment, and you can then
-start the individual IOCs manually.
+where `IPADDR` is the IP address of the device to connect to. The options you
+can specify (after `lnlsdig/dmm7510-epics-ioc`):
 
-There are a few environment variables that are needed for the IOC to run properly:
+- `-i IPADDR`: device IP address to connect to (required)
+- `-p IPPORT`: device IP port number to connect to (default: 5025)
+- `-d DEVICE`: device identifier ([DCCT<number>|ICT<number>|DMM<number>]) (required)
+- `-P PREFIX1`: the value of the EPICS `$(P)` macro used to prefix the PV names
+- `-R PREFIX2`: the value of the EPICS `$(R)` macro used to prefix the PV names
 
-    DMM7510_INSTANCE
-    DMM7510_<DM7510_INSTANCE>_DEVICE_IP
-    DMM7510_<DM7510_INSTANCE>_PV_AREA_PREFIX
-    DMM7510_<DM7510_INSTANCE>_PV_DEVICE_PREFIX
+## Creating a Persistent Container
 
-A working example on how to run this image is by running:
+If you want to create a persistent container to run the IOC, you can run a
+command similar to:
 
-    docker run --name docker-dmm7510-test -it --rm -e DMM7510_INSTANCE=DCCT1 \
-        -e DMM7510_DCCT1_DEVICE_IP=10.2.117.32 -e DMM7510_DCCT1_PV_AREA_PREFIX=AS-Inj \
-        -e DMM7510_DCCT1_PV_DEVICE_PREFIX=DI:DCCT lnls/dmm7510-epics-ioc
+    docker run -it --net host --restart always --name CONTAINER_NAME lnlsdig/dmm7510-epics-ioc -i IPADDR
+
+where `IPADDR` is as in the previous section and `CONTAINER_NAME` is the name
+given to the container. You can also use the same options as described in the
+previous section.
+
+## Building the Image Manually
+
+To build the image locally without downloading it from Docker Hub, clone the
+repository and run the `docker build` command:
+
+    git clone https://github.com/lnls-dig/docker-dmm7510-epics-ioc
+    docker build -t lnlsdig/dmm7510-epics-ioc docker-dmm7510-epics-ioc
