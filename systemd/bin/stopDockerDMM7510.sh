@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -uo pipefail
+set -u
 
 if [ -z "$DMM7510_INSTANCE" ]; then
     echo "Device type is not set. Please use -d option" >&2

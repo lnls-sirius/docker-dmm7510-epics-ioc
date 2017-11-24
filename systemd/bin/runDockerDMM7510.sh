@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -uo pipefail
+set -u
 
 if [ -z "$DMM7510_INSTANCE" ]; then
     echo "Device type is not set. Please use -d option" >&2
@@ -30,9 +30,23 @@ export EPICS_PV_DEVICE_PREFIX=${!DMM7510_CURRENT_PV_DEVICE_PREFIX}
 export EPICS_DEVICE_IP=${!DMM7510_CURRENT_DEVICE_IP}
 export EPICS_DEVICE_PORT=${!DMM7510_CURRENT_DEVICE_PORT}
 
+# Create volume for autosave and ignore errors
+/usr/bin/docker create \
+    -v /opt/epics/startup/ioc/dmm7510-epics-ioc/iocBoot/iocdmm7510/autosave \
+    --name dmm7510-epics-ioc-${DMM7510_INSTANCE}-volume \
+    lnlsdig/dmm7510-epics-ioc:${IMAGE_VERSION} \
+    2>/dev/null || true
+
+# Remove a possible old and stopped container with
+# the same name
+/usr/bin/docker rm \
+    dmm7510-epics-ioc-${DMM7510_INSTANCE} || true
+
 /usr/bin/docker run \
     --net host \
     -t \
+    --rm \
+    --volumes-from dmm7510-epics-ioc-${DMM7510_INSTANCE}-volume \
     --name dmm7510-epics-ioc-${DMM7510_INSTANCE} \
     lnlsdig/dmm7510-epics-ioc:${IMAGE_VERSION} \
     -i ${EPICS_DEVICE_IP} \
@@ -40,11 +54,11 @@ export EPICS_DEVICE_PORT=${!DMM7510_CURRENT_DEVICE_PORT}
     -d ${DMM7510_INSTANCE} \
     -P ${EPICS_PV_AREA_PREFIX} \
     -R ${EPICS_PV_DEVICE_PREFIX}
-# If there is a container with the same name
-# use it
-if [ "$?" -ne "0" ]; then
-    /usr/bin/docker start \
-	-a \
-        dmm7510-epics-ioc-${DMM7510_INSTANCE}
-    exit 0
-fi
+## If there is a container with the same name 
+## use it
+#if [ "$?" -ne "0" ]; then
+#    /usr/bin/docker start \
+#	-a \
+#       dmm7510-epics-ioc-${DMM7510_INSTANCE}
+#    exit 0
+#fi
