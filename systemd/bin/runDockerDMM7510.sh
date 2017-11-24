@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -u
+set -uo pipefail
 
 if [ -z "$DMM7510_INSTANCE" ]; then
     echo "Device type is not set. Please use -d option" >&2
@@ -30,7 +30,6 @@ export EPICS_PV_DEVICE_PREFIX=${!DMM7510_CURRENT_PV_DEVICE_PREFIX}
 export EPICS_DEVICE_IP=${!DMM7510_CURRENT_DEVICE_IP}
 export EPICS_DEVICE_PORT=${!DMM7510_CURRENT_DEVICE_PORT}
 
-#set +eo pipefail
 /usr/bin/docker run \
     --net host \
     -t \
@@ -45,5 +44,7 @@ export EPICS_DEVICE_PORT=${!DMM7510_CURRENT_DEVICE_PORT}
 # use it
 if [ "$?" -ne "0" ]; then
     /usr/bin/docker start \
+	-a \
         dmm7510-epics-ioc-${DMM7510_INSTANCE}
+    exit 0
 fi
