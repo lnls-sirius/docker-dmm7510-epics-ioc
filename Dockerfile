@@ -2,7 +2,7 @@ FROM lnls/epics-dist:debian-9.2
 
 RUN git clone https://github.com/lnls-dig/dmm7510-epics-ioc.git /opt/epics/dmm7510-epics-ioc && \
     cd /opt/epics/dmm7510-epics-ioc && \
-    git checkout 06402f40ab5ee3c35c8417b995f5dfff5d5809c9 && \
+    git checkout bc650f6f89730c2b3b8cdd4f84e0c39864d5c56d && \
     sed -i -e 's|^EPICS_BASE=.*$|EPICS_BASE=/opt/epics/base|' configure/RELEASE && \
     sed -i -e 's|^SUPPORT=.*$|SUPPORT=/opt/epics/synApps_5_8/support|' configure/RELEASE && \
     sed -i -e 's|^STREAM=.*$|STREAM=/opt/epics/stream|' configure/RELEASE && \
