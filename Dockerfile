@@ -1,8 +1,14 @@
 FROM lnls/epics-dist:debian-9.2
 
-RUN git clone https://github.com/lnls-dig/dmm7510-epics-ioc.git /opt/epics/dmm7510-epics-ioc && \
-    cd /opt/epics/dmm7510-epics-ioc && \
-    git checkout bc650f6f89730c2b3b8cdd4f84e0c39864d5c56d && \
+ENV IOC_REPO dmm7510-epics-ioc
+
+ENV BOOT_DIR iocdmm7510
+
+ENV COMMIT bc650f6f89730c2b3b8cdd4f84e0c39864d5c56d
+
+RUN git clone https://github.com/lnls-dig/${IOC_REPO}.git /opt/epics/${IOC_REPO} && \
+    cd /opt/epics/${IOC_REPO} && \
+    git checkout ${COMMIT} && \
     sed -i -e 's|^EPICS_BASE=.*$|EPICS_BASE=/opt/epics/base|' configure/RELEASE && \
     sed -i -e 's|^SUPPORT=.*$|SUPPORT=/opt/epics/synApps_5_8/support|' configure/RELEASE && \
     sed -i -e 's|^STREAM=.*$|STREAM=/opt/epics/stream|' configure/RELEASE && \
@@ -14,8 +20,6 @@ RUN git clone https://github.com/lnls-dig/dmm7510-epics-ioc.git /opt/epics/dmm75
 # where to put system-wide env-vars on docker-debian
 RUN . /root/.bashrc
 
-ENV EPICS_WORKDIR /opt/epics/startup/ioc/dmm7510-epics-ioc/iocBoot/iocdmm7510
+WORKDIR /opt/epics/startup/ioc/${IOC_REPO}/iocBoot/${BOOT_DIR}
 
-WORKDIR $EPICS_WORKDIR
-
-ENTRYPOINT ["/opt/epics/startup/ioc/dmm7510-epics-ioc/iocBoot/iocdmm7510/runProcServ.sh"]
+ENTRYPOINT ["./runProcServ.sh"]
