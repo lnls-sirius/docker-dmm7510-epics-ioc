@@ -1,9 +1,7 @@
 FROM lnls/epics-dist:centos-7.4.1708
 
 ENV IOC_REPO dmm7510-epics-ioc
-
 ENV BOOT_DIR iocdmm7510
-
 ENV COMMIT bc650f6f89730c2b3b8cdd4f84e0c39864d5c56d
 
 RUN git clone https://github.com/lnls-dig/${IOC_REPO}.git /opt/epics/${IOC_REPO} && \
