@@ -2,7 +2,7 @@ FROM lnls/epics-dist:debian-9.2
 
 ENV IOC_REPO dmm7510-epics-ioc
 ENV BOOT_DIR iocdmm7510
-ENV COMMIT v1.0.2
+ENV COMMIT v1.0.3-rc1
 
 RUN git clone https://github.com/lnls-dig/${IOC_REPO}.git /opt/epics/${IOC_REPO} && \
     cd /opt/epics/${IOC_REPO} && \
