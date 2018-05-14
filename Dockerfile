@@ -1,4 +1,4 @@
-FROM lnls/epics-dist:debian-9.2
+FROM lnls/epics-dist:base-3.15-debian-9
 
 ENV IOC_REPO dmm7510-epics-ioc
 ENV BOOT_DIR iocdmm7510
