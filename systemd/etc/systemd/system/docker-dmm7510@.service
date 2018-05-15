@@ -8,7 +8,7 @@ Restart=always
 RestartSec=2
 EnvironmentFile=/etc/sysconfig/docker-dmm7510-epics-ioc
 EnvironmentFile=/etc/sysconfig/docker-dmm7510-epics-ioc-mapping
-Environment=IMAGE_VERSION=1.0.3-rc3-debian-9.2
+Environment=IMAGE_VERSION=1.0.3-debian-9.2
 # Used inside runDockerDMM7510 script
 Environment=DMM7510_INSTANCE=%i
 ExecStartPre=-/usr/bin/docker pull lnlsdig/dmm7510-epics-ioc:${IMAGE_VERSION}
