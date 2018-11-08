@@ -1,15 +1,19 @@
-FROM lnls/epics-dist:debian-9.2
+FROM lnls/epics-dist:base-3.15-synapps-lnls-R1-0-0-debian-9.5
 
 ENV IOC_REPO dmm7510-epics-ioc
 ENV BOOT_DIR iocdmm7510
-ENV COMMIT v1.0.0
+ENV COMMIT v2.0.0
 
 RUN git clone https://github.com/lnls-dig/${IOC_REPO}.git /opt/epics/${IOC_REPO} && \
     cd /opt/epics/${IOC_REPO} && \
     git checkout ${COMMIT} && \
-    sed -i -e 's|^EPICS_BASE=.*$|EPICS_BASE=/opt/epics/base|' configure/RELEASE && \
-    sed -i -e 's|^SUPPORT=.*$|SUPPORT=/opt/epics/synApps_5_8/support|' configure/RELEASE && \
-    sed -i -e 's|^STREAM=.*$|STREAM=/opt/epics/stream|' configure/RELEASE && \
+    echo 'EPICS_BASE=/opt/epics/base' > configure/RELEASE.local && \
+    echo 'SUPPORT=/opt/epics/synApps-lnls-R1-0-0/support' >> configure/RELEASE.local && \
+    echo 'STREAM=$(SUPPORT)/stream-R2-7-7' >> configure/RELEASE.local && \
+    echo 'SNCSEQ=$(SUPPORT)/seq-2-2-6' >> configure/RELEASE.local && \
+    echo 'CALC=$(SUPPORT)/calc-R3-7' >> configure/RELEASE.local && \
+    echo 'ASYN=$(SUPPORT)/asyn-R4-33' >> configure/RELEASE.local && \
+    echo 'AUTOSAVE=$(SUPPORT)/autosave-R5-9' >> configure/RELEASE.local && \
     make && \
     make install && \
     make clean
