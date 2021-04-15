@@ -19,6 +19,8 @@ can specify (after `lnlsdig/dmm7510-epics-ioc`):
 - `-d DEVICE`: device identifier ([DCCT<number>|ICT<number>|DMM<number>]) (required)
 - `-P PREFIX1`: the value of the EPICS `$(P)` macro used to prefix the PV names
 - `-R PREFIX2`: the value of the EPICS `$(R)` macro used to prefix the PV names
+- `-l EPICS_IOC_LOG_INET`: the IP address of the IOC log server
+- `-L EPICS_IOC_LOG_PORT`: the port number of the IOC log server
 
 ## Creating a Persistent Container
 
