@@ -36,7 +36,8 @@ previous section.
 ## Building the Image Manually
 
 To build the image locally without downloading it from Docker Hub, clone the
-repository and run the `docker build` command:
-
-    git clone https://github.com/lnls-dig/docker-dmm7510-epics-ioc
-    docker build -t lnlsdig/dmm7510-epics-ioc docker-dmm7510-epics-ioc
+repository, update the contents of `.env` accordingly and run the `docker-compose build` command:
+```command
+git clone https://github.com/lnls-dig/docker-dmm7510-epics-ioc
+docker-compose build
+```
